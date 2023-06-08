@@ -12,6 +12,7 @@ enum ThirdBeautifyType: String {
     case sense = "SenseBeautify"
     case fu = "FUBeautify"
     case bytedEffect = "BytedEffect"
+    case htEffect = "HTEffectBeautify"
 }
 
 class ThirdBeautifyEntry: UIViewController {
@@ -42,10 +43,15 @@ class ThirdBeautifyEntry: UIViewController {
         let bytedEffect = UIAlertAction(title: "Byted Effect".localized, style: .default) { _ in
             self.jumpHandler(type: .bytedEffect)
         }
+        
+        let htEffect = UIAlertAction(title: "HT Effect".localized, style: .default) { _ in
+            self.jumpHandler(type: .htEffect)
+        }
         let cancel = UIAlertAction(title: "Cancel".localized, style: .cancel, handler: nil)
         actionSheetVC.addAction(sense)
         actionSheetVC.addAction(fu)
         actionSheetVC.addAction(bytedEffect)
+        actionSheetVC.addAction(htEffect)
         actionSheetVC.addAction(cancel)
         present(actionSheetVC, animated: true, completion: nil)
     }

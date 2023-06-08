@@ -17,17 +17,7 @@
 import AgoraRtcKit
 import AGEVideoLayout
 
-class RawVideoDataViewController: BaseViewController, HTEffectDelegate {
-    func onInitSuccess() {
-        
-    }
-    
-    func onInitFailure() {
-        
-    }
-    
-    
-    
+class RawVideoDataViewController: BaseViewController {
     @IBOutlet weak var videoContainer: AGEVideoContainer!
     @IBOutlet weak var imageView: UIImageView!
     
@@ -36,30 +26,11 @@ class RawVideoDataViewController: BaseViewController, HTEffectDelegate {
     
     var agoraKit: AgoraRtcEngineKit!
     var isSnapShoting = false
-    var _isRenderInit = false
-    
-    deinit {
-        //todo --- HTEffect start 4 ---
-        //        [[HTEffect shareInstance] releaseBufferRenderer];
-        //        [[HTUIManager shareManager] destroy];
-        HTEffect.shareInstance().releaseBufferRenderer()
-        HTUIManager.share().destroy()
-        
-        //todo --- HTEffect end ---
-    }
+
     // MARK: - LifeCycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        
-        //todo --- HTEffect start2 ---
-//        #error 需要HTEffect appid，与包名绑定，请联系商务获取
-        let key: String = ""
-        HTEffect.shareInstance().initHTEffect(key, with: self)
-        HTUIManager.share().load(toWindowDelegate: nil)
-        self.view.addSubview(HTUIManager.share().defaultButton)
-        //todo --- HTEffect end 2 ---
-        
         
         guard let channelId = configs["channelName"] as? String,
               let resolution = GlobalSettings.shared.getSetting(key: "resolution")?.selectedOption().value as? CGSize,
@@ -102,7 +73,7 @@ class RawVideoDataViewController: BaseViewController, HTEffectDelegate {
             }
         })
     }
-    
+        
     override func didMove(toParent parent: UIViewController?) {
         if parent == nil {
             agoraKit.disableAudio()
@@ -111,7 +82,7 @@ class RawVideoDataViewController: BaseViewController, HTEffectDelegate {
             agoraKit.leaveChannel(nil)
         }
     }
-    
+       
     // MARK: - UI
     func setupUI () {
         localVideo.setPlaceholder(text: "Local Host".localized)
@@ -127,56 +98,6 @@ class RawVideoDataViewController: BaseViewController, HTEffectDelegate {
 // MARK: - AgoraVideoFrameDelegate
 extension RawVideoDataViewController: AgoraVideoFrameDelegate {
     func onCapture(_ videoFrame: AgoraOutputVideoFrame) -> Bool {
-        //todo --- HTEffect start 3 ---
-        let inputPixelBuffer: CVPixelBuffer! =  videoFrame.pixelBuffer
-        
-        //CVPixelBufferLockBaseAddress(inputPixelBuffer, 0);
-        CVPixelBufferLockBaseAddress(inputPixelBuffer, CVPixelBufferLockFlags(rawValue: 0))
-        
-        var format:HTFormatEnum? = .BGRA
-        switch CVPixelBufferGetPixelFormatType(inputPixelBuffer) {
-        case kCVPixelFormatType_32BGRA:
-            format = .BGRA
-            break
-        case kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange:
-            format = .NV12
-            break
-        case kCVPixelFormatType_420YpCbCr8BiPlanarFullRange:
-            format = .NV12
-            break
-        default:
-            print("错误的视频帧格式")
-            format = .BGRA
-            break
-        }
-        
-        var imageWidth :Int32 = 0
-        var imageHeight :Int32 = 0
-        if (format == .BGRA) {
-            imageWidth = Int32(CVPixelBufferGetBytesPerRow(inputPixelBuffer) / 4)
-            imageHeight = Int32(CVPixelBufferGetHeight(inputPixelBuffer))
-        } else {
-            //        imageWidth = (int)CVPixelBufferGetWidthOfPlane(inputPixelBuffer , 0);
-            //如果出现花屏，修改imageWidth的获取方式
-            imageWidth = Int32(CVPixelBufferGetBytesPerRowOfPlane(inputPixelBuffer , 0))
-            imageHeight = Int32(CVPixelBufferGetHeightOfPlane(inputPixelBuffer , 0))
-        }
-        //        unsigned char *baseAddress = (unsigned char *)CVPixelBufferGetBaseAddressOfPlane(inputPixelBuffer, 0);
-        let baseAddress = CVPixelBufferGetBaseAddressOfPlane(inputPixelBuffer, 0)
-        
-        CVPixelBufferUnlockBaseAddress(inputPixelBuffer, CVPixelBufferLockFlags(rawValue: 0));
-        
-        if (!_isRenderInit) {
-            HTEffect.shareInstance().releaseBufferRenderer()
-            _isRenderInit = HTEffect.shareInstance().initBufferRenderer(format!, width: imageWidth, height: imageHeight, rotation: .clockwise0, isMirror: true, maxFaces: 5)
-            //            [[HTEffect shareInstance] releaseBufferRenderer];
-            //            _isRenderInit = [[HTEffect shareInstance] initBufferRenderer:format width:imageWidth height:imageHeight rotation:HTRotationClockwise0 isMirror:is_Mirror maxFaces:5];
-        }
-        //        [[HTEffect shareInstance] processBuffer:baseAddress];
-        HTEffect.shareInstance().processBuffer(baseAddress)
-        
-        //todo --- HTEffect end 3 ---
-        
         if isSnapShoting {
             isSnapShoting = false
             let image = MediaUtils.pixelBuffer(toImage: videoFrame.pixelBuffer!)
@@ -188,8 +109,6 @@ extension RawVideoDataViewController: AgoraVideoFrameDelegate {
     }
     
     func onRenderVideoFrame(_ videoFrame: AgoraOutputVideoFrame, uid: UInt, channelId: String) -> Bool {
-        
-        
         return true
     }
 }
@@ -255,7 +174,7 @@ extension RawVideoDataViewController: AgoraRtcEngineDelegate {
 
 class RawVideoDataEntryViewController: UIViewController {
     @IBOutlet weak var channelTextField: UITextField!
-    
+
     @IBAction func joinBtnClicked(sender: UIButton) {
         guard let channelName = channelTextField.text,
               channelName.lengthOfBytes(using: .utf8) > 0 else {return}

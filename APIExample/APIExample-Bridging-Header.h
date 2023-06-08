@@ -9,8 +9,3 @@
 #import <AgoraReplayKitExtension/AgoraReplayKitExtension.h>
 #import "MediaUtils.h"
 #import "AgoraPictureInPictureController.h"
-
-//todo --- HTEffect start 1 ---
-#import "HTUIManager.h"
-#import <HTEffect/HTEffectInterface.h>
-//todo --- HTEffect end 1 ---

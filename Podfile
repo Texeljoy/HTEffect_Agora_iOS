@@ -13,6 +13,8 @@ target 'APIExample' do
 #    pod 'senseLib', :path => 'sense.podspec'
 #    pod 'bytedEffect', :path => 'bytedEffect.podspec'
 #    pod 'fuLib', :path => 'fu.podspec'
+#    pod 'HTEffect', :path => 'HTEffect.podspec'
+
 end
 
 target 'Agora-ScreenShare-Extension' do
