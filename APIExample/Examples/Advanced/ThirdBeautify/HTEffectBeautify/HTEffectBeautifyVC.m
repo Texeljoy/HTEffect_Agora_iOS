@@ -49,7 +49,7 @@
     [self.rtcEngineKit enableVideo];
     [self.rtcEngineKit enableAudio];
     
-    // add FaceUnity filter and add to process manager
+    // add HTEffect filter and add to process manager
     self.videoFilter = [HTEffectManager shareManager];
 
     // add Sticker 初始化成功后调用

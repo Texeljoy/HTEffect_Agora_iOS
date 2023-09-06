@@ -10,9 +10,6 @@ target 'APIExample' do
   pod 'CocoaAsyncSocket', '7.6.5'
   pod 'AgoraRtcEngine_iOS', '4.1.1'
     # pod 'sdk', :path => 'sdk.podspec'
-#    pod 'senseLib', :path => 'sense.podspec'
-#    pod 'bytedEffect', :path => 'bytedEffect.podspec'
-#    pod 'fuLib', :path => 'fu.podspec'
 #    pod 'HTEffect', :path => 'HTEffect.podspec'
 
 end
