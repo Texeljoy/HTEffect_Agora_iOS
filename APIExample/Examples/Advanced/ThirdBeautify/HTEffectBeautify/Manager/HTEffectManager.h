@@ -26,6 +26,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// 设置贴纸
 - (void)setSticker: (NSString *)stickerName;
 
+/// 资源销毁
+- (void)setRelease;
+
 @end
 
 NS_ASSUME_NONNULL_END

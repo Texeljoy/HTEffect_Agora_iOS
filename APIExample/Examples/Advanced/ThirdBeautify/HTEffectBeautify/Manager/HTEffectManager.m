@@ -10,7 +10,9 @@
 #import "HTAppId.h"
 #import "BundleUtil.h"
 #if __has_include(<HTEffect/HTEffect.h>)
+//todo --- HTEffect start0 ---
 #import <HTEffect/HTEffect.h>
+//todo --- HTEffect end ---
 #endif
 
 static HTEffectManager *shareManager = NULL;
@@ -81,7 +83,9 @@ static HTEffectManager *shareManager = NULL;
     self = [super init];
     if (self) {
 #if __has_include(<HTEffect/HTEffect.h>)
+        //todo --- HTEffect start1 ---
         [[HTEffect shareInstance] initHTEffect:appId withDelegate:self];
+        //todo --- HTEffect end ---
 #endif
     }
     return self;
@@ -95,11 +99,19 @@ static HTEffectManager *shareManager = NULL;
 #endif
 }
 
+- (void)setRelease {
+#if __has_include(<HTEffect/HTEffect.h>)
+    //todo --- HTEffect start3 ---
+    [[HTEffect shareInstance] releaseBufferRenderer];
+    //todo --- HTEffect end ---
+#endif
+}
+
 #pragma mark - VideoFilterDelegate
 
 - (CVPixelBufferRef)processFrame:(CVPixelBufferRef)frame {
 #if __has_include(<HTEffect/HTEffect.h>)
-    //todo --- HTEffect start3 ---
+    //todo --- HTEffect start2 ---
     CVPixelBufferLockBaseAddress(frame, 0);
     HTFormatEnum format;
     switch (CVPixelBufferGetPixelFormatType(frame)) {
@@ -137,6 +149,7 @@ static HTEffectManager *shareManager = NULL;
         _isRenderInit = [[HTEffect shareInstance] initBufferRenderer:format width:imageWidth height:imageHeight rotation:HTRotationClockwise0 isMirror:YES maxFaces:5];
     }
     [[HTEffect shareInstance] processBuffer:baseAddress];
+    //todo --- HTEffect end ---
 #endif
     return frame;
 }

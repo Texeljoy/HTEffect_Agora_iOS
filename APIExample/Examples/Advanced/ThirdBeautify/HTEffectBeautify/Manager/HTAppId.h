@@ -8,5 +8,5 @@
 
 #import <Foundation/Foundation.h>
 
-NSString *const appId = @"";
+NSString *const appId = @"Your AppId";
  

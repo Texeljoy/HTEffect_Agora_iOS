@@ -1,86 +1,90 @@
 # API Example iOS
 
-*English | [中文](README.zh.md)*
+*[English](README.md) | 中文*
 
-This project presents you a set of API examples to help you understand how to use Agora APIs.
+这个开源示例项目演示了Agora视频SDK的部分API使用示例，以帮助开发者更好地理解和运用Agora视频SDK的API。
 
-## Problem
-After users upgrade their iOS devices to iOS 14.0, and use an app that integrates the Agora RTC SDK for iOS for the first time, users see a prompt for finding local network devices. The following picture shows the pop-up prompt:
+## 问题描述
+iOS 系统版本升级至 14.0 版本后，用户首次使用集成了声网 iOS 语音或视频 SDK 的 app 时会看到查找本地网络设备的弹窗提示。默认弹窗界面如下图所示：
 
-![](../pictures/ios_14_privacy.png)
+![](../pictures/ios_14_privacy_zh.png)
 
-[Solution](https://docs.agora.io/en/help/integration-issues/local_network_privacy)
+[解决方案](https://docs.agora.io/cn/faq/local_network_privacy)
 
-## Prerequisites
+## 环境准备
 
-- Xcode 13.0+
-- Physical iOS device (iPhone or iPad)
-- iOS simulator is NOT supported
+- XCode 13.0 +
+- iOS 真机设备
+- 不支持模拟器
 
-## Quick Start
+## 运行示例程序
 
-This section shows you how to prepare, build, and run the sample application.
+这个段落主要讲解了如何编译和运行实例程序。
 
-### Prepare Dependencies
+### 安装依赖库
 
-Change directory into **iOS** folder, run following command to install project dependencies,
+切换到 **iOS** 目录，运行以下命令使用CocoaPods安装依赖，Agora视频SDK会在安装后自动完成集成。
 
-use cocoapods
+使用cocoapods
 
-[install cocoapods](http://t.zoukankan.com/lijiejoy-p-9680485.html)
-
+[安装cocoapods](http://t.zoukankan.com/lijiejoy-p-9680485.html)
 
 ```
 pod install
 ```
 
-Verify `APIExample.xcworkspace` has been properly generated.
+运行后确认 `APIExample.xcworkspace` 正常生成即可。
 
-### Obtain an App Id
+### 创建Agora账号并获取AppId
 
-To build and run the sample application, get an App Id:
+在编译和启动实例程序前，你需要首先获取一个可用的App Id:
 
-1. Create a developer account at [agora.io](https://dashboard.agora.io/signin/). Once you finish the signup process, you will be redirected to the Dashboard.
-2. Navigate in the Dashboard tree on the left to **Projects** > **Project List**.
-3. Save the **App Id** from the Dashboard for later use.
-4. Generate a temp **Access Token** (valid for 24 hours) from dashboard page with given channel name, save for later use.
+1. 在[agora.io](https://dashboard.agora.io/signin/)创建一个开发者账号
+2. 前往后台页面，点击左部导航栏的 **项目 > 项目列表** 菜单
+3. 复制后台的 **App Id** 并备注，稍后启动应用时会用到它
+4. 如果开启了token，需要获取 App 证书并设置给`certificate`
 
-5. Open `APIExample.xcworkspace` and edit the `KeyCenter.swift` file. In the `KeyCenter` struct, update `<#Your App Id#>` with your App Id, and change `<#Temp Access Token#>` with the temp Access Token generated from dashboard. Note you can leave the token variable `nil` if your project has not turned on security token.
+5. 打开 `APIExample.xcworkspace` 并编辑 `KeyCenter.swift`，将你的 AppID 和 Certificate 分别替换到 `<#Your APPID#>` 与 `<#YOUR Certificate#>`
 
-    ``` Swift
+    ```
     /**
-      Agora assigns App IDs to app developers to identify projects and organizations.
-     If you have multiple completely separate apps in your organization, for example built by different teams,
-     you should use different App IDs.
-     If applications need to communicate with each other, they should use the same App ID.
-     In order to get the APP ID, you can open the agora console (https://console.agora.io/) to create a project,
-     then the APP ID can be found in the project detail page.
-     */
-     static let AppId: String = <# YOUR APPID#>
-     
-     /**
-      Agora provides App certificate to generate Token. You can deploy and generate a token on your server,
-     or use the console to generate a temporary token.
-     In order to get the APP ID, you can open the agora console (https://console.agora.io/) to create a project with the App Certificate enabled,
-     then the APP Certificate can be found in the project detail page.
-     PS: If the project does not have certificates enabled, leave this field blank.
-     */
-     static var Certificate: String? = <#YOUR Certificate#>
-        
+     Agora 给应用程序开发人员分配 App ID，以识别项目和组织。如果组织中有多个完全分开的应用程序，例如由不同的团队构建，
+     则应使用不同的 App ID。如果应用程序需要相互通信，则应使用同一个App ID。
+     进入声网控制台(https://console.agora.io/)，创建一个项目，进入项目配置页，即可看到APP ID。
+   */
+    static let AppId: String = <# YOUR APPID#>
+
+    /**
+     Agora 提供 App certificate 用以生成 Token。您可以在您的服务器部署并生成 Token，或者使用控制台生成临时的 Token。
+     进入声网控制台(https://console.agora.io/)，创建一个带证书鉴权的项目，进入项目配置页，即可看到APP证书。
+     注意：如果项目没有开启证书鉴权，这个字段留空。
+    */
+    static var Certificate: String? = <#YOUR Certificate#>
     ```
 
-You are all set. Now connect your iPhone or iPad device and run the project.
+然后你就可以使用 `APIExample.xcworkspace` 编译并运行项目了。
 
-## Contact Us
+<br/>
 
-- For potential issues, take a look at our [FAQ](https://docs.agora.io/en/faq) first
-- Dive into [Agora SDK Samples](https://github.com/AgoraIO) to see more tutorials
-- Take a look at [Agora Use Case](https://github.com/AgoraIO-usecase) for more complicated real use case
-- Repositories managed by developer communities can be found at [Agora Community](https://github.com/AgoraIO-Community)
-- You can find full API documentation at [Document Center](https://docs.agora.io/en/)
-- If you encounter problems during integration, you can ask question in [Stack Overflow](https://stackoverflow.com/questions/tagged/agora.io)
-- You can file bugs about this sample at [issue](https://github.com/AgoraIO/Basic-Video-Call/issues)
+## **HTEffect**
+### **说明**
+- 以下介绍如何快速配置HTEffect模块
 
-## License
+<br/>
 
-The MIT License (MIT)
+### **操作步骤**
+#### **1. 下载源码**
+依次执行以下命令
+- git clone **当前仓库**
+- cd **工程目录**
+- git submodule init && git submodule update
+
+#### **2. 配置工程**
+下载完成后，打开工程
+- 将 **Bundle Display Name** 和 **Bundle Identifier** 分别替换为您的**应用名**和**包名**
+- 将HTAppId.h中NSString *const appId = @"Your AppId"的**Your AppId**替换成您的**AppId**
+- 将HTEffect文件夹下的**HTEffect.bundle**替换为您的**HTEffect.bundle**
+- 编译，运行，日志搜索**init-status**可以查看相关日志
+- 具体执行步骤可以全局搜索 **//todo --- HTEffect** 进行查看 
+
+<br/>
